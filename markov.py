@@ -1,5 +1,4 @@
 """Generate Markov text from text files."""
-
 from random import choice
 
 
@@ -10,9 +9,12 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    # your code goes here
+    content = open(file_path)
+    text = content.read()
+    content.close()
 
-    return 'Contents of your file as one long string'
+    return text
+
 
 
 def make_chains(text_string):
@@ -40,20 +42,30 @@ def make_chains(text_string):
         [None]
     """
 
+    words = text_string.split()
     chains = {}
 
-    # your code goes here
+    for i in range(len(words) - 2):
+        key = (words[i], words[i + 2])
+        value = words[i + 2]
 
+    if key not in chains:
+        chains[key] = []
+
+    chains[key].append(value)
     return chains
 
 
 def make_text(chains):
     """Return text from chains."""
-
-    words = []
-
-    # your code goes here
-
+    key = choice(list(chains.keys()))
+    words = [key[0], key[1]]
+    word = choice(chains[key])
+    while word is not None:
+        key = (key[1], word)
+        words.append(word)
+        word = choice(chains[key])
+        
     return ' '.join(words)
 
 
